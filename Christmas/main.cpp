@@ -168,41 +168,69 @@ void setupCamera() {
 
 void drawSnowMan(float x, float y, float z) {
 
+glPushMatrix();
 
  glColor3f(1.0f, 1.0f, 1.0f);
-
 // Draw Body
- glTranslatef(x ,y, z);
- glutSolidSphere(0.20f,30,20);
-
-// Draw Head
- glTranslatef(x, y+0.3f, z);
- glutSolidSphere(0.13f,20,20);
-
-//Draw Nose
-
+glPushMatrix();
+glTranslatef(x, y-0.4f, z);
+glutSolidSphere(0.33f,20,20);
+glPopMatrix();
+    
+glPushMatrix();
+glTranslatef(x, y+0.25f, z);
 glColor3f(1.0f, 0.0f , 0.0f);
-glRotatef(45.0f,0.0f, 1.0f, 0.0f);
-glutSolidCone(0.04f,0.25f,10,2);
-
+glRotatef(90, 1, 0, 0);
+glutSolidTorus(0.05f, 0.09f, 20, 20);
+glPopMatrix();
     
-// Draw Eyes
+glPushMatrix();
+glColor3f(1.0f, 1.0f , 1.0f);
+glTranslatef(x ,y, z);
+glutSolidSphere(0.20f,30,20);
+glPopMatrix();
+    
+// Draw Head
+ glPushMatrix();
+ glTranslatef(x, y+0.35f, z);
+ glutSolidSphere(0.10f,20,20);
+ glPopMatrix();
 
- glColor3f(0.0f,0.0f,0.0f);
- glTranslatef(x-0.05f, 0.07f, 0.18f);
- glutSolidSphere(0.015f,10,10);
- glTranslatef(x+0.10f, 0.092f, 0.18f);
- glutSolidSphere(0.015f,10,10);
- 
 // Draw Hat
+glPushMatrix();
+glTranslatef(x+0.18, y+0.52, 0.18f);
+glColor3f(1.0f, 0.0f , 0.0f);
+glRotated(-90,1, 0, 0);
+glutSolidCone(0.055f,0.15f,10,2);
+glPopMatrix();
+        
+glPushMatrix();
+glColor3f(1.0f, 1.0f , 1.0f);
+glTranslatef(x+0.18, y+0.65f, 0.18f);
+glutSolidSphere(0.03f,20,20);
+glRotated(50,0, 1, 0);
+glPopMatrix();
     
-    glTranslatef(x-0.05f, y+0.16f, 0.18f);
-    glColor3f(1.0f, 0.0f , 0.0f);
-    glRotated(-90,1, 0, 0);
-    glutSolidCone(0.055f,0.15f,10,2);
-    glColor3f(1.0f, 1.0f , 1.0f);
-    glTranslatef(x, y+0.45f, 0.04f);
-    glutSolidSphere(0.03f,20,20);
+//Draw Nose
+glPushMatrix();
+glColor3f(1.0f, 0.0f , 0.0f);
+glTranslatef(x+0.18, y+0.45f, 0.18f);
+glRotatef(45.0f,0.0f, 1.0f, 0.0f);
+glutSolidCone(0.01f,0.18f,10,2);
+glPopMatrix();
+    
+    // Draw Eyes
+    glPushMatrix();
+    glColor3f(0.0f,0.0f,0.0f);
+    glTranslatef(x-0.15f, y+0.3f, 0);
+    glutSolidSphere(0.01f,10,10);
+    glPopMatrix();
+//glPushMatrix();
+//glTranslatef(x+0.18, 0.47f, 0);
+//glutSolidSphere(0.01f,10,10);
+//glPopMatrix();
+    
+glPopMatrix();
 }
 
 void Display() {
