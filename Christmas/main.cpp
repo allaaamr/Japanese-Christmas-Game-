@@ -224,21 +224,153 @@ glTranslatef(-0.2, 0, 0.7);
 Gift(0.8,1.3,0);
 glPopMatrix();
 }
+int x_position=0;
+int z_position =0;
 
+void Character(){
+    glPushMatrix();
+    glColor3f(1, 0, 0);
+    
+    //Legs
+    
+//    glPushMatrix();
+//    glTranslated(x_position+0.05, 0,+0);
+//    glColor3f(0, 0, 0);
+//    glutSolidCube(0.1);
+//    glPopMatrix();
+    
+    glPushMatrix();
+    glColor3f(1, 0, 0);
+    glTranslated(x_position+0.05, 0.1,+0);
+    glScalef(1, 10, 1);
+    glRotatef(45,0,1,0);
+    glutSolidCube(0.05);
+//    glColor3f(0, 0, 0);
+//    glutSolidCube(0.1);
+    glPopMatrix();
+    
+    
+    
+    glPushMatrix();
+    glColor3f(1, 0, 0);
+    glTranslated(x_position-0.05, 0.1, 0.05);
+    glScalef(1, 10, 1);
+    glRotatef(45,0,1,0);
+    glutSolidCube(0.05);
+    glPopMatrix();
+    
+    //Body
+    glPushMatrix();
+    GLUquadricObj* qobj;
+    qobj = gluNewQuadric();
+    gluQuadricDrawStyle(qobj, GLU_FILL);
+    glTranslated(x_position, 0.8, z_position);
+    glRotated(90, 1, 0, 0);
+    gluCylinder(qobj, 0.07, 0.2, 0.55, 20, 20);
+    glPopMatrix();
+    
+    glPushMatrix();
+    glColor3f(1, 1, 1);
+    glTranslated(x_position, 0.25, z_position);
+    glRotated(90, 1, 0, 0);
+    glutSolidTorus(0.03, 0.19, 10, 10);
+    glPopMatrix();
+    
+    glPushMatrix();
+    glColor3f(0.7, 0, 0);
+    glTranslated(x_position, 0.5, z_position);
+    glRotated(90, 1, 0, 0);
+    glutSolidTorus(0.028, 0.13, 10, 10);
+    glPopMatrix();
+    
+    glPushMatrix();
+    glColor3f(1, 1, 1);
+    glTranslated(x_position, 0.82, z_position);
+    glRotated(90, 1, 0, 0);
+    glutSolidTorus(0.03, 0.05, 10, 10);
+    glPopMatrix();
+    
+    
+    //Face
+    glPushMatrix();
+    glColor3f(1, 1, 0.7);
+    glTranslated(x_position, 0.9, z_position);
+    glScaled(1, 1.3, 1);
+    glutSolidSphere(0.07, 10, 10);
+    glPopMatrix();
+    
+    
+    //Hat
+    glPushMatrix();
+    glColor3f(1, 1, 1);
+    glTranslated(x_position, 0.97, z_position);
+    glRotated(90, 1, 0, 0);
+    glutSolidTorus(0.02, 0.04, 10, 10);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(x_position, 0.97, z_position);
+    glColor3f(1.0f, 0.0f , 0.0f);
+    glRotated(-90,1, 0, 0);
+    glutSolidCone(0.055f,0.15f,10,2);
+    glPopMatrix();
+    
+    glPushMatrix();
+    glColor3f(1.0f,1.0f,1.0f);
+    glTranslatef(x_position, 1.12, z_position);
+    glutSolidSphere(0.02f,10,10);
+    glPopMatrix();
+    
+    // Eyes
+    glPushMatrix();
+    glColor3f(0,0,0);
+    glTranslatef(x_position+0.052, 0.9, z_position+0.022);
+    glutSolidSphere(0.017f,10,10);
+    glPopMatrix();
+    
+    glPushMatrix();
+    glColor3f(0,0,0);
+    glTranslatef(x_position+0.022, 0.9, z_position+0.052);
+    glutSolidSphere(0.017f,10,10);
+    glPopMatrix();
+    
+    //Arms
+    glPushMatrix();
+    glColor3f(1.0f,0,0);
+    qobj = gluNewQuadric();
+    gluQuadricDrawStyle(qobj, GLU_FILL);
+    glTranslated(x_position-0.08, 0.7, z_position);
+    glRotated(45, 1, 0, 1);
+    gluCylinder(qobj, 0.025, 0.025, 0.25, 20, 20);
+    glPopMatrix();
+    
+    glPushMatrix();
+    glColor3f(1.0f,0,0);
+    qobj = gluNewQuadric();
+    gluQuadricDrawStyle(qobj, GLU_FILL);
+    glTranslated(x_position+0.04, 0.72, z_position+0.003);
+    glRotated(45, 1, 0, 1);
+    glRotated(90, 1, 0, 0);
+    gluCylinder(qobj, 0.025, 0.025, 0.25, 20, 20);
+    glPopMatrix();
+    
+    glPopMatrix();
+    
+}
 void Lantern(){
-glPushMatrix();
-glColor3f(1.0f, 1.0f, 0.0f);
-glTranslated(0, 0.3, 0);
-glScaled(1, 0.9, 1);
-glutSolidSphere(0.17, 10, 10);
-glColor3f(0.0f,0.0f, 0.0f);
-GLUquadricObj* qobj;
-qobj = gluNewQuadric();
-gluQuadricDrawStyle(qobj, GLU_FILL);
-glTranslated(0, 0.3, 0);
-glRotated(90, 1, 0, 0);
-gluCylinder(qobj, 0.05, 0.05, 0.55, 20, 20);
-glPopMatrix();
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 0.0f);
+    glTranslated(0, 0.3, 0);
+    glScaled(1, 0.9, 1);
+    glutSolidSphere(0.17, 10, 10);
+    glColor3f(0.0f,0.0f, 0.0f);
+    GLUquadricObj* qobj;
+    qobj = gluNewQuadric();
+    gluQuadricDrawStyle(qobj, GLU_FILL);
+    glTranslated(0, 0.3, 0);
+    glRotated(90, 1, 0, 0);
+    gluCylinder(qobj, 0.05, 0.05, 0.55, 20, 20);
+    glPopMatrix();
 
 }
 void Lanterns(){
@@ -523,8 +655,9 @@ void Display() {
 //    glTranslated(0.25, 0.42, 0.35);
 //    glutSolidSphere(0.1, 15, 15);
 //    glPopMatrix();
-//
+
     Floor();
+    Character();
     Tree();
     drawSnowMan();
     Presents();
@@ -573,6 +706,10 @@ void Keyboard(unsigned char key, int x, int y) {
     case 'e':
         camera.moveZ(-d);
         break;
+    case 'i':
+            x_position+=0.1;
+            z_position+=0.1;
+        break;
 
     case GLUT_KEY_ESCAPE:
         exit(EXIT_SUCCESS);
@@ -587,10 +724,13 @@ void Special(int key, int x, int y) {
 
     switch (key) {
     case GLUT_KEY_UP:
-        camera.rotateX(a);
+            x_position++;
+     //       z_position+=0.8;
+//        camera.rotateX(a);
         break;
     case GLUT_KEY_DOWN:
-        camera.rotateX(-a);
+            x_position--;
+//        camera.rotateX(-a);
         break;
     case GLUT_KEY_LEFT:
         camera.rotateY(a);
