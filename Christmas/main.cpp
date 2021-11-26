@@ -149,7 +149,7 @@ void setupLights() {
     glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
 
     GLfloat lightIntensity[] = { 0.7f, 0.7f, 1, 1.0f };
-    GLfloat lightPosition[] = { -7.0f, 6.0f, 3.0f, 0.0f };
+    GLfloat lightPosition[] = { 0.0f, 0.0f, 0.0f, 0.0f };
     glLightfv(GL_LIGHT0, GL_POSITION, lightIntensity);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, lightIntensity);
 }
@@ -171,39 +171,73 @@ void Floor(){
     glPopMatrix();
 }
 
+
+
+void Gift(float red, float green, float blue){
+glPushMatrix();
+    
+glPushMatrix();
+glColor3f(red, 0.3, 0.2);
+glTranslatef(0, 0.13f, 0);
+glRotated(45,0, 1, 0);
+glutSolidCube(0.2);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(red, green, 0.0f);
+glTranslatef(0, 0.14f, 0);
+glRotated(45,0, 1, 0);
+glScalef(1.08, 1.05, 0.08);
+glutSolidCube(0.2);
+glPopMatrix();
+    
+glPushMatrix();
+glColor3f(red, green, 0.0f);
+glTranslatef(0, 0.14f, 0);
+glRotated(-45,0, 1, 0);
+glScalef(1.08, 1.05, 0.08);
+glutSolidCube(0.2);
+glPopMatrix();
+    
+glPushMatrix();
+glColor3f(red, 0.0f, blue);
+glTranslatef(0, 0.26f, 0);
+glutSolidSphere(0.02, 5, 5);
+glPopMatrix();
+    
+glPopMatrix();
+
+}
 void Presents(){
 glPushMatrix();
-    
-glPushMatrix();
-glTranslatef(0.5f, 0.13f, -0.5);
-glRotated(45,0, 1, 0);
-glutSolidCube(0.1);
-glPopMatrix();
-
-glPushMatrix();
-glColor3f(1.0f, 1.0f, 0.0f);
-glTranslatef(0.5f, 0.14f, -0.5);
-glRotated(45,0, 1, 0);
-glScalef(1.1, 1.2, 0.1);
-glutSolidCube(0.1);
-glPopMatrix();
-
-glPushMatrix();
-glColor3f(1.0f, 1.0f, 0.0f);
-glTranslatef(0.5f, 0.14f, -0.5);
-glRotated(-45,0, 1, 0);
-glScalef(1.1, 1.2, 0.1);
-glutSolidCube(0.1);
-glPopMatrix();
-
-glPushMatrix();
-glColor3f(1.0f, 0.0f, 1.0f);
-glTranslatef(0.5f, 0.22f, -0.5);
-glutSolidSphere(0.015, 5, 5);
+glTranslatef(0.7, 0, 0);
+Gift(1,1,1);
 glPopMatrix();
     
+glPushMatrix();
+glTranslatef(-0.3, 0, 0.4);
+Gift(0,1.3,1.5);
 glPopMatrix();
 
+glPushMatrix();
+glTranslatef(-0.3, 0, -0.3);
+Gift(0.8,1.3,0);
+glPopMatrix();
+}
+
+void Lantern(){
+glPushMatrix();
+glColor3f(1.0f, 1.0f, 0.0f);
+    GLUquadricObj* qobj;
+    qobj = gluNewQuadric();
+    gluQuadricDrawStyle(qobj, GLU_FILL);
+    glTranslated(0, 1, 0);
+    glRotated(90, 1, 0, 0);
+    gluCylinder(qobj, 0.05, 0.05, 0.3, 20, 20);
+    glPopMatrix();
+//    glScaled(0.3, 1, 0.3);
+//    glutSolidSphere(0.4, 10, 10);
+//glPopMatrix();
 }
 
 void Tree(){
@@ -471,12 +505,13 @@ void Display() {
 //    glutSolidSphere(0.1, 15, 15);
 //    glPopMatrix();
 //
-      Floor();
+    Floor();
     Tree();
     drawSnowMan();
     Presents();
-      LeftFence();
-      RightFence();
+    Lantern();
+    LeftFence();
+    RightFence();
     BackFence();
    
 //      drawSnowMan();
