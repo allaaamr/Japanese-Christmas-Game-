@@ -9,8 +9,20 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
+#include <ctime>
+using namespace std;
 #define GLUT_KEY_ESCAPE 27
 #define DEG2RAD(a) (a * 0.0174532925)
+
+double x_position=0;
+double z_position =0;
+double angle=0;
+double gift1_y = 0;
+double gift2_y = 0;
+double gift3_y = 0;
+int remaining_gifts = 3;
+int c;
 
 class Vector3f {
 public:
@@ -46,7 +58,6 @@ public:
         return Vector3f(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
     }
 };
-
 
 class Camera {
 public:
@@ -98,10 +109,13 @@ public:
             up.x, up.y, up.z
         );
     }
+   
+    
+    
+    
 };
 
 Camera camera;
-
 
 void drawWall(double thickness) {
     glPushMatrix();
@@ -110,33 +124,6 @@ void drawWall(double thickness) {
     glutSolidCube(1);
     glPopMatrix();
 }
-//void drawTableLeg(double thick, double len) {
-//    glPushMatrix();
-//    glTranslated(0, len / 2, 0);
-//    glScaled(thick, len, thick);
-//    glutSolidCube(1.0);
-//    glPopMatrix();
-//}
-
-//void drawTable(double topWid, double topThick, double legThick, double legLen){
-//    glPushMatrix();
-//    glTranslated(0, legLen, 0);
-//    glScaled(topWid, topThick, topWid);
-//    glutSolidCube(1.0);
-//    glPopMatrix();
-//
-//    double dist = 0.95*topWid / 2.0 - legThick / 2.0;
-//    glPushMatrix();
-//    glTranslated(dist, 0, dist);
-//    drawTableLeg(legThick, legLen);
-//    glTranslated(0, 0, -2 * dist);
-//    drawTableLeg(legThick, legLen);
-//    glTranslated(-2 * dist, 0, 2 * dist);
-//    drawTableLeg(legThick, legLen);
-//    glTranslated(0, 0, -2 * dist);
-//    drawTableLeg(legThick, legLen);
-//    glPopMatrix();
-//}
 
 void setupLights() {
     GLfloat ambient[] = { 0.7f, 0.7f, 0.7, 1.0f };
@@ -153,6 +140,7 @@ void setupLights() {
     glLightfv(GL_LIGHT0, GL_POSITION, lightIntensity);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, lightIntensity);
 }
+
 void setupCamera() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -162,6 +150,7 @@ void setupCamera() {
     glLoadIdentity();
     camera.look();
 }
+
 void Floor(){
     glColor3f(0.3f, 0.0f, 0.0f);
     glPushMatrix();
@@ -171,14 +160,12 @@ void Floor(){
     glPopMatrix();
 }
 
-
-
 void Gift(float red, float green, float blue){
 glPushMatrix();
     
 glPushMatrix();
 glColor3f(red, 0.3, 0.2);
-glTranslatef(0, 0.13f, 0);
+glTranslatef(0, 0.1, 0);
 glRotated(45,0, 1, 0);
 glutSolidCube(0.2);
 glPopMatrix();
@@ -208,52 +195,60 @@ glPopMatrix();
 glPopMatrix();
 
 }
+
 void Presents(){
 glPushMatrix();
-glTranslatef(0.7, 0, 0);
+glTranslatef(0.7, gift1_y, 0);
 Gift(1,1,1);
 glPopMatrix();
     
 glPushMatrix();
-glTranslatef(-0.3, 0, 0.4);
+glTranslatef(-0.3, gift2_y, 0.4);
 Gift(0,1.3,1.5);
 glPopMatrix();
 
 glPushMatrix();
-glTranslatef(-0.2, 0, 0.7);
+glTranslatef(-0.2, gift3_y, 0.7);
 Gift(0.8,1.3,0);
 glPopMatrix();
 }
-int x_position=0;
-int z_position =0;
+
+void DetectCollision(){
+    
+    //Check Collision with 1st gift
+    if (0.6<=x_position &&  x_position<=0.8 &&  -0.1<=z_position && z_position<=0.1){
+        cout << x_position ;
+       gift1_y+=10;
+        remaining_gifts--;
+    }
+    //Check Collision with 2nd gift
+    if (-0.4<=x_position && x_position<=-0.2 &&  0.3<=z_position && z_position<=0.5){
+       gift2_y+=10;
+        remaining_gifts--;
+    }
+    //Check Collision with 3rd gift
+    if (-0.3<=x_position && x_position<=-0.1 &&  0.6<=z_position && z_position<=0.8){
+       gift3_y+=10;
+        remaining_gifts--;
+    }
+}
 
 void Character(){
     glPushMatrix();
     glColor3f(1, 0, 0);
     
     //Legs
-    
-//    glPushMatrix();
-//    glTranslated(x_position+0.05, 0,+0);
-//    glColor3f(0, 0, 0);
-//    glutSolidCube(0.1);
-//    glPopMatrix();
-    
     glPushMatrix();
     glColor3f(1, 0, 0);
-    glTranslated(x_position+0.05, 0.1,+0);
+    glTranslated(0.05, 0.1, 0.05);
     glScalef(1, 10, 1);
     glRotatef(45,0,1,0);
     glutSolidCube(0.05);
-//    glColor3f(0, 0, 0);
-//    glutSolidCube(0.1);
     glPopMatrix();
-    
-    
-    
+
     glPushMatrix();
     glColor3f(1, 0, 0);
-    glTranslated(x_position-0.05, 0.1, 0.05);
+    glTranslated(-0.05, 0.1, 0.05);
     glScalef(1, 10, 1);
     glRotatef(45,0,1,0);
     glutSolidCube(0.05);
@@ -264,28 +259,28 @@ void Character(){
     GLUquadricObj* qobj;
     qobj = gluNewQuadric();
     gluQuadricDrawStyle(qobj, GLU_FILL);
-    glTranslated(x_position, 0.8, z_position);
+    glTranslated(0, 0.8, 0);
     glRotated(90, 1, 0, 0);
     gluCylinder(qobj, 0.07, 0.2, 0.55, 20, 20);
     glPopMatrix();
     
     glPushMatrix();
     glColor3f(1, 1, 1);
-    glTranslated(x_position, 0.25, z_position);
+    glTranslated(0, 0.25, 0);
     glRotated(90, 1, 0, 0);
     glutSolidTorus(0.03, 0.19, 10, 10);
     glPopMatrix();
     
     glPushMatrix();
     glColor3f(0.7, 0, 0);
-    glTranslated(x_position, 0.5, z_position);
+    glTranslated(0, 0.5, 0);
     glRotated(90, 1, 0, 0);
     glutSolidTorus(0.028, 0.13, 10, 10);
     glPopMatrix();
     
     glPushMatrix();
     glColor3f(1, 1, 1);
-    glTranslated(x_position, 0.82, z_position);
+    glTranslated(0, 0.82, 0);
     glRotated(90, 1, 0, 0);
     glutSolidTorus(0.03, 0.05, 10, 10);
     glPopMatrix();
@@ -294,7 +289,7 @@ void Character(){
     //Face
     glPushMatrix();
     glColor3f(1, 1, 0.7);
-    glTranslated(x_position, 0.9, z_position);
+    glTranslated(0, 0.9, 0);
     glScaled(1, 1.3, 1);
     glutSolidSphere(0.07, 10, 10);
     glPopMatrix();
@@ -303,13 +298,13 @@ void Character(){
     //Hat
     glPushMatrix();
     glColor3f(1, 1, 1);
-    glTranslated(x_position, 0.97, z_position);
+    glTranslated(0, 0.97, 0);
     glRotated(90, 1, 0, 0);
     glutSolidTorus(0.02, 0.04, 10, 10);
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(x_position, 0.97, z_position);
+    glTranslatef(0, 0.97, 0);
     glColor3f(1.0f, 0.0f , 0.0f);
     glRotated(-90,1, 0, 0);
     glutSolidCone(0.055f,0.15f,10,2);
@@ -317,20 +312,20 @@ void Character(){
     
     glPushMatrix();
     glColor3f(1.0f,1.0f,1.0f);
-    glTranslatef(x_position, 1.12, z_position);
+    glTranslatef(0, 1.12, 0);
     glutSolidSphere(0.02f,10,10);
     glPopMatrix();
     
     // Eyes
     glPushMatrix();
     glColor3f(0,0,0);
-    glTranslatef(x_position+0.052, 0.9, z_position+0.022);
+    glTranslatef(0.052, 0.9, 0.022);
     glutSolidSphere(0.017f,10,10);
     glPopMatrix();
     
     glPushMatrix();
     glColor3f(0,0,0);
-    glTranslatef(x_position+0.022, 0.9, z_position+0.052);
+    glTranslatef(0.022, 0.9, 0.052);
     glutSolidSphere(0.017f,10,10);
     glPopMatrix();
     
@@ -339,7 +334,7 @@ void Character(){
     glColor3f(1.0f,0,0);
     qobj = gluNewQuadric();
     gluQuadricDrawStyle(qobj, GLU_FILL);
-    glTranslated(x_position-0.08, 0.7, z_position);
+    glTranslated(-0.08, 0.7, 0);
     glRotated(45, 1, 0, 1);
     gluCylinder(qobj, 0.025, 0.025, 0.25, 20, 20);
     glPopMatrix();
@@ -348,7 +343,7 @@ void Character(){
     glColor3f(1.0f,0,0);
     qobj = gluNewQuadric();
     gluQuadricDrawStyle(qobj, GLU_FILL);
-    glTranslated(x_position+0.04, 0.72, z_position+0.003);
+    glTranslated(0.04, 0.72, 0.003);
     glRotated(45, 1, 0, 1);
     glRotated(90, 1, 0, 0);
     gluCylinder(qobj, 0.025, 0.025, 0.25, 20, 20);
@@ -357,6 +352,7 @@ void Character(){
     glPopMatrix();
     
 }
+
 void Lantern(){
     glPushMatrix();
     glColor3f(1.0f, 1.0f, 0.0f);
@@ -373,6 +369,7 @@ void Lantern(){
     glPopMatrix();
 
 }
+
 void Lanterns(){
     glPushMatrix();
     glTranslated(1.1, 0, 0.2);
@@ -389,7 +386,6 @@ void Lanterns(){
     Lantern();
     glPopMatrix();
 }
-
 
 void Tree(){
     
@@ -446,6 +442,7 @@ glutSolidCone(0.14f,0.5f,10,2);
 glPopMatrix();
     
 }
+
 void drawSnowMan() {
 
 //glPushMatrix();
@@ -456,7 +453,7 @@ void drawSnowMan() {
 // Draw Body
 glPushMatrix();
 glTranslatef(0.5, 0.4f, 0.1);
-    glScaled(1, 1.3, 1);
+glScaled(1, 1.3, 1);
 glutSolidSphere(0.1f,20,20);
 glPopMatrix();
 
@@ -538,9 +535,8 @@ void LeftFence(){
     double x=-0.85;
     for( int i=0; i<7; i++ ,z+=0.15, x+=0.15 ){
     glPushMatrix();
-    glTranslated(x, 0.4, z);
+    glTranslated(x, 0.3, z);
     glScaled(0.1, 1, 0.1);
-//    glRotated(90, 1, 0, 1);
     glRotated(45, 0, 1, 0);
     glutSolidCube(0.6);
     glPopMatrix();
@@ -561,7 +557,7 @@ void RightFence(){
     double x=0.35;
     for( int i=0; i<7; i++ ,z+=0.15, x+=0.15 ){
     glPushMatrix();
-    glTranslated(x, 0.4, z);
+    glTranslated(x, 0.3, z);
     glScaled(0.1, 1, 0.1);
 //    glRotated(90, 1, 0, 1);
     glRotated(45, 0, 1, 0);
@@ -580,7 +576,7 @@ void RightFence(){
 void BackFence(){
     glColor3f(0.6f, 0.0f, 0.0f);
     glPushMatrix();
-    glTranslated(-1.15, 0.4, 0.1);
+    glTranslated(-1.15, 0.3, 0.1);
     glScaled(0.18, 1, 0.18);
 //    glRotated(90, 1, 0, 1);
     glRotated(-45, 0, 1, 0);
@@ -588,49 +584,49 @@ void BackFence(){
     glPopMatrix();
     
     glPushMatrix();
-    glTranslated(-0.95, 0.4, -0.1);
+    glTranslated(-0.95, 0.3, -0.1);
     glScaled(0.18, 1, 0.18);
     glRotated(-45, 0, 1, 0);
     glutSolidCube(0.6);
     glPopMatrix();
     
     glPushMatrix();
-    glTranslated(-0.75, 0.4, -0.3);
+    glTranslated(-0.75, 0.3, -0.3);
     glScaled(0.18, 1, 0.18);
     glRotated(-45, 0, 1, 0);
     glutSolidCube(0.6);
     glPopMatrix();
     
     glPushMatrix();
-    glTranslated(-0.55, 0.4, -0.5);
+    glTranslated(-0.55, 0.3, -0.5);
     glScaled(0.18, 1, 0.18);
     glRotated(-45, 0, 1, 0);
     glutSolidCube(0.6);
     glPopMatrix();
     
     glPushMatrix();
-    glTranslated(-0.35, 0.4, -0.7);
+    glTranslated(-0.35, 0.3, -0.7);
     glScaled(0.18, 1, 0.18);
     glRotated(-45, 0, 1, 0);
     glutSolidCube(0.6);
     glPopMatrix();
     
     glPushMatrix();
-    glTranslated(-0.15, 0.4, -0.9);
+    glTranslated(-0.15, 0.3, -0.9);
     glScaled(0.18, 1, 0.18);
     glRotated(-45, 0, 1, 0);
     glutSolidCube(0.6);
     glPopMatrix();
     
     glPushMatrix();
-    glTranslated(0.05, 0.4, -1.1);
+    glTranslated(0.05, 0.3, -1.1);
     glScaled(0.18, 1, 0.18);
     glRotated(-45, 0, 1, 0);
     glutSolidCube(0.6);
     glPopMatrix();
     
     
-    glTranslated(-0.5, 0.4, -0.45);
+    glTranslated(-0.5, 0.3, -0.45);
     glRotated(-45, 0, 1, 0);
     glRotated(90, 1, 0, 0);
     glScaled(0.1, 4, 0.1);
@@ -639,47 +635,42 @@ void BackFence(){
     
  
 }
+
 void Display() {
     setupCamera();
     setupLights();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-   
-//    glPushMatrix();
-//    glTranslated(0.6, 0.38, 0.5);
-//    glRotated(30, 0, 1, 0);
-//    glutSolidTeapot(0.08);
-//    glPopMatrix();
-//    glPushMatrix();
-//    glTranslated(0.25, 0.42, 0.35);
-//    glutSolidSphere(0.1, 15, 15);
-//    glPopMatrix();
-
+    
+    if(c>=2 && remaining_gifts>0){
+        gift1_y +=0.1;
+        gift2_y +=0.1;
+        gift3_y +=0.1;
+    }
+    DetectCollision();
     Floor();
+    
+    glPushMatrix();
+    glTranslated(x_position, 0, z_position);
+    glRotatef(angle,0,1,0);
     Character();
+    glPopMatrix();
+    
     Tree();
+    
+    glPushMatrix();
+    glTranslated(0, -0.22, 0);
     drawSnowMan();
+    glPopMatrix();
+    
+    
     Presents();
     Lanterns();
     LeftFence();
     RightFence();
     BackFence();
    
-//      drawSnowMan();
-//    glPushMatrix();
-//    glTranslated(0.4, 0.0, 0.4);
-//    drawTable(0.6, 0.02, 0.02, 0.3);
-//    glPopMatrix();
-//    drawWall(0.02);
-//    glPushMatrix();
-//    glRotated(0, 0, 1.0, 0);
-//    drawWall(0.02);
-//    glPopMatrix();
-//    glPushMatrix();
-//    glRotated(-90, 1.0, 0.0, 0.0);
-//    drawWall(0.02);
-//    glPopMatrix();
+
 
     glFlush();
 }
@@ -707,8 +698,41 @@ void Keyboard(unsigned char key, int x, int y) {
         camera.moveZ(-d);
         break;
     case 'i':
-            x_position+=0.1;
-            z_position+=0.1;
+            x_position+=0.01;
+            z_position+=0.01;
+            angle=0;
+        break;
+    case 'k':
+            
+            x_position-=0.01;
+            z_position-=0.01;
+            angle=180;
+        break;
+    case 'l':
+            x_position+=0.01;
+            z_position-=0.01;
+            angle=90;
+        break;
+    case 'j':
+            x_position-=0.01;
+            z_position+=0.01;
+            angle=-90;
+        break;
+    case '1':
+            camera.eye = Vector3f(1.3,0,-1.2);
+//            camera.moveY(1);
+        break;
+    case '2':
+            camera.eye = Vector3f(-1.2,0,1.3);
+//            camera.moveY(1);
+        break;
+    case '3':
+        camera.moveX(d);
+            camera.eye = Vector3f(0,1,0);
+            camera.moveY(0.8);
+        break;
+    case '4':
+        camera.moveX(-d);
         break;
 
     case GLUT_KEY_ESCAPE:
@@ -718,19 +742,15 @@ void Keyboard(unsigned char key, int x, int y) {
     glutPostRedisplay();
 }
 
-
 void Special(int key, int x, int y) {
     float a = 1.0;
 
     switch (key) {
     case GLUT_KEY_UP:
-            x_position++;
-     //       z_position+=0.8;
-//        camera.rotateX(a);
+        camera.rotateX(a);
         break;
     case GLUT_KEY_DOWN:
-            x_position--;
-//        camera.rotateX(-a);
+        camera.rotateX(-a);
         break;
     case GLUT_KEY_LEFT:
         camera.rotateY(a);
@@ -743,6 +763,13 @@ void Special(int key, int x, int y) {
     glutPostRedisplay();
 }
 
+void time(int val)
+{
+    c++;
+    glutPostRedisplay();
+    glutTimerFunc(10000,time,0);
+}
+
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
 
@@ -753,7 +780,7 @@ int main(int argc, char** argv) {
     glutDisplayFunc(Display);
     glutKeyboardFunc(Keyboard);
     glutSpecialFunc(Special);
-
+    glutTimerFunc(0,time,0);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
