@@ -391,52 +391,70 @@ void Tree(){
     
 // Tree 1
 glPushMatrix();
+    
+glColor3f(0.55, 0, 0);
+
+glPushMatrix();
+glTranslatef(0.15f, 0.1, -0.7);
+glScaled(0.2, 0.4, 0.2);
+glRotated(45, 0, 1, 0);
+glutSolidCube(0.6);
+glPopMatrix();
+    
 glColor3f(0.0f, 0.6f, 0.0f);
 
 glPushMatrix();
-glTranslatef(0.15f, 0.13f, -0.5);
+glTranslatef(0.15f, 0.23f, -0.7);
 glRotated(-90,1, 0, 0);
 glutSolidCone(0.3f,0.7f,10,2);
 glPopMatrix();
 
 glPushMatrix();
-glTranslatef(0.15f, 0.55f, -0.5);
+glTranslatef(0.15f, 0.65f, -0.7);
 glRotated(-90,1, 0, 0);
 glutSolidCone(0.22f,0.5f,10,2);
 glPopMatrix();
     
 glPushMatrix();
-glTranslatef(0.15f, 0.85f, -0.5);
+glTranslatef(0.15f, 0.95f, -0.7);
 glRotated(-90,1, 0, 0);
 glutSolidCone(0.14f,0.5f,10,2);
 glPopMatrix();
     
- // Tree 1 Christmas Decoration
-glPushMatrix();
-glColor3f(1.0f, 0.0f, 1.0f);
-glTranslatef(-0.2f, 0.185f, -0.3);
-glTranslatef(0.56, 0.61f, 0.195);
-glutSolidSphere(0.01f,10,10);
-glPopMatrix();
+// // Tree 1 Christmas Decoration
+//glPushMatrix();
+//glColor3f(1.0f, 0.0f, 1.0f);
+//glTranslatef(-0.2f, 0.185f, -0.3);
+//glTranslatef(0.56, 0.61f, 0.195);
+//glutSolidSphere(0.01f,10,10);
+//glPopMatrix();
         
     
 glPushMatrix();
-glColor3f(0.0f, 0.6f, 0.0f);
+glColor3f(0.55, 0, 0);
 
 glPushMatrix();
-glTranslatef(-0.5f, 0.13f, 0.15);
+glTranslatef(-0.7f, 0.1, 0.15);
+glScaled(0.2, 0.4, 0.2);
+glRotated(45, 0, 1, 0);
+glutSolidCube(0.6);
+glPopMatrix();
+
+glColor3f(0.0f, 0.6f, 0.0f);
+glPushMatrix();
+glTranslatef(-0.7f, 0.23f, 0.15);
 glRotated(-90,1, 0, 0);
 glutSolidCone(0.3f,0.7f,10,2);
 glPopMatrix();
 
 glPushMatrix();
-    glTranslatef(-0.5f, 0.55f, 0.15);
+glTranslatef(-0.7f, 0.65f, 0.15);
 glRotated(-90,1, 0, 0);
 glutSolidCone(0.22f,0.5f,10,2);
 glPopMatrix();
     
 glPushMatrix();
-glTranslatef(-0.5f, 0.86f, 0.15);
+glTranslatef(-0.7f, 0.96f, 0.15);
 glRotated(-90,1, 0, 0);
 glutSolidCone(0.14f,0.5f,10,2);
 glPopMatrix();
@@ -767,7 +785,7 @@ void time(int val)
 {
     c++;
     glutPostRedisplay();
-    glutTimerFunc(10000,time,0);
+    glutTimerFunc(50000,time,0);
 }
 
 int main(int argc, char** argv) {
@@ -776,7 +794,7 @@ int main(int argc, char** argv) {
     glutInitWindowSize(1240, 680);
     glutInitWindowPosition(60, 90);
 
-    glutCreateWindow("Lab 5");
+    glutCreateWindow("Christmas");
     glutDisplayFunc(Display);
     glutKeyboardFunc(Keyboard);
     glutSpecialFunc(Special);
