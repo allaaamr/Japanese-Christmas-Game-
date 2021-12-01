@@ -391,7 +391,7 @@ void Tree(){
     
 // Tree 1
 glPushMatrix();
-    
+
 glColor3f(0.55, 0, 0);
 
 glPushMatrix();
@@ -421,14 +421,6 @@ glRotated(-90,1, 0, 0);
 glutSolidCone(0.14f,0.5f,10,2);
 glPopMatrix();
     
-// // Tree 1 Christmas Decoration
-//glPushMatrix();
-//glColor3f(1.0f, 0.0f, 1.0f);
-//glTranslatef(-0.2f, 0.185f, -0.3);
-//glTranslatef(0.56, 0.61f, 0.195);
-//glutSolidSphere(0.01f,10,10);
-//glPopMatrix();
-        
     
 glPushMatrix();
 glColor3f(0.55, 0, 0);
@@ -653,11 +645,16 @@ void BackFence(){
     
  
 }
+  
 
 void Display() {
     setupCamera();
     setupLights();
-
+    
+    cout<< x_position<< endl;
+    cout<< z_position<< endl;
+    
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     if(c>=2 && remaining_gifts>0){
@@ -715,26 +712,37 @@ void Keyboard(unsigned char key, int x, int y) {
     case 'e':
         camera.moveZ(-d);
         break;
-    case 'i':
-            x_position+=0.01;
-            z_position+=0.01;
-            angle=0;
-        break;
     case 'k':
+            if(x_position + z_position < 1.26)
+            {
+                x_position+=0.01;
+                z_position+=0.01;
+                angle=0;
+            }
             
-            x_position-=0.01;
-            z_position-=0.01;
-            angle=180;
+        break;
+    case 'i':
+            if(x_position+z_position > -1){
+                x_position-=0.01;
+                z_position-=0.01;
+                angle=180;
+            }
+            
         break;
     case 'l':
-            x_position+=0.01;
-            z_position-=0.01;
-            angle=90;
+            if(x_position - z_position < 1){
+                x_position+=0.01;
+                z_position-=0.01;
+                angle=90;
+            }
+            
         break;
     case 'j':
+            if(x_position-z_position>-1){
             x_position-=0.01;
             z_position+=0.01;
             angle=-90;
+            }
         break;
     case '1':
             camera.eye = Vector3f(1.3,0,-1.2);
