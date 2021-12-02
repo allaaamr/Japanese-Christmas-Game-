@@ -23,6 +23,27 @@ double gift2_y = 0;
 double gift3_y = 0;
 int remaining_gifts = 3;
 int c;
+double green = 0;
+double blue= 0;
+
+double snowman_rotation =0;
+bool snowman_animation =false;
+
+double lanterns_rotation =0;
+double lanterns_translation =0;
+bool lanterns_animation =false;
+
+
+bool trees_animation =false;
+double trees_translation =0;
+bool forwardd = true;
+
+bool gifts_animation =false;
+
+bool fence_animation =false;
+double fence_scaling = 1;
+bool up = true;
+
 
 class Vector3f {
 public:
@@ -172,23 +193,23 @@ glPopMatrix();
 
 glPushMatrix();
 glColor3f(red, green, 0.0f);
-glTranslatef(0, 0.14f, 0);
+glTranslatef(0, 0.1f, 0);
 glRotated(45,0, 1, 0);
-glScalef(1.08, 1.05, 0.08);
+glScalef(1.08, 1.01, 0.08);
 glutSolidCube(0.2);
 glPopMatrix();
     
 glPushMatrix();
 glColor3f(red, green, 0.0f);
-glTranslatef(0, 0.14f, 0);
+glTranslatef(0, 0.1f, 0);
 glRotated(-45,0, 1, 0);
-glScalef(1.08, 1.05, 0.08);
+glScalef(1.08, 1.01, 0.08);
 glutSolidCube(0.2);
 glPopMatrix();
     
 glPushMatrix();
 glColor3f(red, 0.0f, blue);
-glTranslatef(0, 0.26f, 0);
+glTranslatef(0, 0.2f, 0);
 glutSolidSphere(0.02, 5, 5);
 glPopMatrix();
     
@@ -373,25 +394,32 @@ void Lantern(){
 void Lanterns(){
     glPushMatrix();
     glTranslated(1.1, 0, 0.2);
+    glRotated(lanterns_rotation, 0, 1, 0);
     Lantern();
     glPopMatrix();
     
     glPushMatrix();
-    glTranslated(0.2, 0, 1.1);
+    glRotated(lanterns_rotation, 0, 1, 0);
+    glTranslated(0.2, lanterns_translation, 1.1);
+//    glRotated(lanterns_rotation, 0, 1, 0);
     Lantern();
     glPopMatrix();
     
     glPushMatrix();
-    glTranslated(-0.3, 0, -0.3);
+    glRotated(lanterns_rotation, 0, 1, 0);
+    glTranslated(-0.3, lanterns_translation, -0.3);
+   
     Lantern();
     glPopMatrix();
 }
 
 void Tree(){
     
-// Tree 1
-glPushMatrix();
 
+glPushMatrix();
+    
+glPushMatrix();
+glTranslated(trees_translation, 0 ,  trees_translation);
 glColor3f(0.55, 0, 0);
 
 glPushMatrix();
@@ -420,8 +448,11 @@ glTranslatef(0.15f, 0.95f, -0.7);
 glRotated(-90,1, 0, 0);
 glutSolidCone(0.14f,0.5f,10,2);
 glPopMatrix();
+
+glPopMatrix();
     
-    
+glPushMatrix();
+glTranslated(trees_translation, 0 ,  trees_translation);
 glPushMatrix();
 glColor3f(0.55, 0, 0);
 
@@ -449,6 +480,9 @@ glPushMatrix();
 glTranslatef(-0.7f, 0.96f, 0.15);
 glRotated(-90,1, 0, 0);
 glutSolidCone(0.14f,0.5f,10,2);
+glPopMatrix();
+glPopMatrix();
+
 glPopMatrix();
     
 }
@@ -540,7 +574,8 @@ glPopMatrix();
 }
 
 void LeftFence(){
-    glColor3f(0.6f, 0.0f, 0.0f);
+    
+    glColor3f(0.6f, green, blue);
     double z= 0.4;
     double x=-0.85;
     for( int i=0; i<7; i++ ,z+=0.15, x+=0.15 ){
@@ -562,7 +597,7 @@ void LeftFence(){
 }
 
 void RightFence(){
-    glColor3f(0.6f, 0.0f, 0.0f);
+    glColor3f(0.6f, green, blue);
     double z= -0.85;
     double x=0.35;
     for( int i=0; i<7; i++ ,z+=0.15, x+=0.15 ){
@@ -584,7 +619,7 @@ void RightFence(){
 }
 
 void BackFence(){
-    glColor3f(0.6f, 0.0f, 0.0f);
+    glColor3f(0.6f, green, blue);
     glPushMatrix();
     glTranslated(-1.15, 0.3, 0.1);
     glScaled(0.18, 1, 0.18);
@@ -657,11 +692,43 @@ void Display() {
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    if(c>=2 && remaining_gifts>0){
+    if(c>=20 && remaining_gifts>0){
         gift1_y +=0.1;
         gift2_y +=0.1;
         gift3_y +=0.1;
     }
+    
+    if(snowman_animation)
+        snowman_rotation +=15;
+    
+    if(lanterns_animation)
+        lanterns_rotation+=15;
+    
+    if(trees_animation){
+        if(trees_translation==0.24){
+            forwardd= false; // start going backward
+        }
+        if(trees_translation==0){
+            forwardd= true; // start going forward
+        }
+        if(forwardd)
+            trees_translation +=0.03;
+        else{
+            trees_translation -=0.03;
+        }
+    }
+    
+    if(fence_animation){
+        if(fence_scaling >1.2)
+            up = false;
+        else if (fence_scaling == 1)
+            up = true;
+        if(up)
+            fence_scaling +=0.03;
+        else
+            fence_scaling -=0.03;
+    }
+    
     DetectCollision();
     Floor();
     
@@ -670,20 +737,33 @@ void Display() {
     glRotatef(angle,0,1,0);
     Character();
     glPopMatrix();
-    
+
     Tree();
     
     glPushMatrix();
     glTranslated(0, -0.22, 0);
+    glRotated(snowman_rotation, 0, 1, 0);
     drawSnowMan();
     glPopMatrix();
     
     
     Presents();
     Lanterns();
+    
+    glPushMatrix();
+    glScaled(1, fence_scaling, 1);
     LeftFence();
+    glPopMatrix();
+    
+    glPushMatrix();
+    glScaled(1, fence_scaling, 1);
     RightFence();
+    glPopMatrix();
+    
+    glPushMatrix();
+    glScaled(1, fence_scaling, 1);
     BackFence();
+    glPopMatrix();
    
 
 
@@ -758,7 +838,49 @@ void Keyboard(unsigned char key, int x, int y) {
             camera.moveY(0.8);
         break;
     case '4':
-        camera.moveX(-d);
+        
+        break;
+    case 'z': //animation of snowman
+            if(!snowman_animation)
+                snowman_animation=true;
+            else{
+                snowman_rotation =0;
+                snowman_animation=false;
+                }
+        break;
+            
+    case 'x':
+            if(!trees_animation)
+                trees_animation=true;
+            else{
+                trees_translation =0;
+                trees_animation=false;
+                }
+        break;
+            
+    case 'c':
+            if(!lanterns_animation){
+                lanterns_translation =0.5;
+                lanterns_animation=true;
+            }
+            else{
+                lanterns_rotation =0;
+                lanterns_animation=false;
+                lanterns_translation =0;
+                }
+        break;
+            
+    case 'v':
+            if(!fence_animation)
+                fence_animation=true;
+            else{
+                fence_scaling =1;
+                fence_animation=false;
+                }
+        break;
+            
+    case 'b':
+        gifts_animation =! gifts_animation;
         break;
 
     case GLUT_KEY_ESCAPE:
@@ -789,11 +911,20 @@ void Special(int key, int x, int y) {
     glutPostRedisplay();
 }
 
+
 void time(int val)
 {
     c++;
+    if(green == 1 || blue ==1){
+        green=0;
+        blue=0;
+    }
+    green+=0.5;
+    blue+=0.5;
+
+    
     glutPostRedisplay();
-    glutTimerFunc(50000,time,0);
+    glutTimerFunc(500,time,0);
 }
 
 int main(int argc, char** argv) {
