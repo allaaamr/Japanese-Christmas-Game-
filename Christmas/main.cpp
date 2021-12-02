@@ -175,7 +175,7 @@ void setupCamera() {
 void Floor(){
     glColor3f(0.3f, 0.0f, 0.0f);
     glPushMatrix();
-    glScaled(10, 0.3, 10);
+    glScaled(10, 0.65, 10);
     glRotated(45, 0, 1, 0);
     glutSolidCube(0.2);
     glPopMatrix();
@@ -186,14 +186,14 @@ glPushMatrix();
     
 glPushMatrix();
 glColor3f(red, 0.3, 0.2);
-glTranslatef(0, 0.1, 0);
+glTranslatef(0, 0.2, 0);
 glRotated(45,0, 1, 0);
 glutSolidCube(0.2);
 glPopMatrix();
 
 glPushMatrix();
 glColor3f(red, green, 0.0f);
-glTranslatef(0, 0.1f, 0);
+glTranslatef(0, 0.2f, 0);
 glRotated(45,0, 1, 0);
 glScalef(1.08, 1.01, 0.08);
 glutSolidCube(0.2);
@@ -201,7 +201,7 @@ glPopMatrix();
     
 glPushMatrix();
 glColor3f(red, green, 0.0f);
-glTranslatef(0, 0.1f, 0);
+glTranslatef(0, 0.2f, 0);
 glRotated(-45,0, 1, 0);
 glScalef(1.08, 1.01, 0.08);
 glutSolidCube(0.2);
@@ -209,7 +209,7 @@ glPopMatrix();
     
 glPushMatrix();
 glColor3f(red, 0.0f, blue);
-glTranslatef(0, 0.2f, 0);
+glTranslatef(0, 0.3f, 0);
 glutSolidSphere(0.02, 5, 5);
 glPopMatrix();
     
@@ -261,16 +261,16 @@ void Character(){
     //Legs
     glPushMatrix();
     glColor3f(1, 0, 0);
-    glTranslated(0.05, 0.1, 0.05);
-    glScalef(1, 10, 1);
+    glTranslated(0.05, 0.11, 0.05);
+    glScalef(1, 7, 1);
     glRotatef(45,0,1,0);
     glutSolidCube(0.05);
     glPopMatrix();
 
     glPushMatrix();
     glColor3f(1, 0, 0);
-    glTranslated(-0.05, 0.1, 0.05);
-    glScalef(1, 10, 1);
+    glTranslated(-0.05, 0.11, 0.05);
+    glScalef(1, 7, 1);
     glRotatef(45,0,1,0);
     glutSolidCube(0.05);
     glPopMatrix();
@@ -380,6 +380,21 @@ void Lantern(){
     glTranslated(0, 0.3, 0);
     glScaled(1, 0.9, 1);
     glutSolidSphere(0.17, 10, 10);
+    
+    glPushMatrix();
+    glColor3f(1.0f,0.0f, 0.0f);
+    glTranslated(0, 0.17, 0);
+    glRotated(90, 1, 0, 0);
+    glutSolidTorus(0.01, 0.055, 20, 20);
+    glPopMatrix();
+    
+    glPushMatrix();
+    glColor3f(1.0f,0.0f, 0.0f);
+    glTranslated(0, -0.17, 0);
+    glRotated(90, 1, 0, 0);
+    glutSolidTorus(0.01, 0.055, 20, 20);
+    glPopMatrix();
+    
     glColor3f(0.0f,0.0f, 0.0f);
     GLUquadricObj* qobj;
     qobj = gluNewQuadric();
@@ -681,7 +696,6 @@ void BackFence(){
  
 }
   
-
 void Display() {
     setupCamera();
     setupLights();
@@ -824,22 +838,39 @@ void Keyboard(unsigned char key, int x, int y) {
             angle=-90;
             }
         break;
-    case '1':
-            camera.eye = Vector3f(1.3,0,-1.2);
+    case '1': //Right
+            camera.eye = Vector3f(1,1,-1);
+            camera.center = Vector3f(0,0,0);
+            camera.up = Vector3f(0,1,0);
 //            camera.moveY(1);
         break;
-    case '2':
-            camera.eye = Vector3f(-1.2,0,1.3);
-//            camera.moveY(1);
+    case '2': //Front
+            camera.eye = Vector3f(1,1,1);
+            camera.center = Vector3f(0,0,0);
+            camera.up = Vector3f(0,1,0);
         break;
-    case '3':
-        camera.moveX(d);
-            camera.eye = Vector3f(0,1,0);
-            camera.moveY(0.8);
+    case '3': // Left
+            camera.eye = Vector3f(-1,1,1);
+            camera.center = Vector3f(0,0,0);
+            camera.up = Vector3f(0,1,0);
         break;
-    case '4':
-        
+    case '4': //Back
+            camera.eye = Vector3f(-1,1,-1);
+            camera.center = Vector3f(0,0,0);
+            camera.up = Vector3f(1,2,1);
         break;
+            
+    case '5': //Top
+            camera.eye = Vector3f(1,1,1);
+            camera.center = Vector3f(0,0,0);
+            camera.up = Vector3f(0,1.5,0);
+            camera.rotateX(-10);
+            camera.moveY(1.5);
+            camera.rotateX(-40);
+            camera.moveY(0.4);
+            
+        break;
+            
     case 'z': //animation of snowman
             if(!snowman_animation)
                 snowman_animation=true;
