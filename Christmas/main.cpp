@@ -946,12 +946,13 @@ void Special(int key, int x, int y) {
 void time(int val)
 {
     c++;
-    if(green == 1 || blue ==1){
+    
+    if(green >= 1 || blue >= 1){
         green=0;
         blue=0;
     }
-    green+=0.5;
-    blue+=0.5;
+    green+=0.1;
+    blue+=0.1;
 
     
     glutPostRedisplay();
