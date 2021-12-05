@@ -21,7 +21,11 @@ double angle=0;
 double gift1_y = 0;
 double gift2_y = 0;
 double gift3_y = 0;
-int remaining_gifts = 3;
+
+bool gift1= false;
+bool gift2 = false;
+bool gift3= false;
+
 int c;
 double green = 0;
 double blue= 0;
@@ -238,19 +242,19 @@ void DetectCollision(){
     
     //Check Collision with 1st gift
     if (0.6<=x_position &&  x_position<=0.8 &&  -0.1<=z_position && z_position<=0.1){
-        cout << x_position ;
        gift1_y+=10;
-        remaining_gifts--;
+        gift1 = true;
+        
     }
     //Check Collision with 2nd gift
     if (-0.4<=x_position && x_position<=-0.2 &&  0.3<=z_position && z_position<=0.5){
        gift2_y+=10;
-        remaining_gifts--;
+        gift2 = true;
     }
     //Check Collision with 3rd gift
     if (-0.3<=x_position && x_position<=-0.1 &&  0.6<=z_position && z_position<=0.8){
        gift3_y+=10;
-        remaining_gifts--;
+        gift3 = true;
     }
 }
 
@@ -700,17 +704,17 @@ void Display() {
     setupCamera();
     setupLights();
     
-    cout<< x_position<< endl;
-    cout<< z_position<< endl;
-    
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    if(c>=20 && remaining_gifts>0){
+    // Time is up and i didn't collect the 3 gifts
+    if(c>=30 && (!gift1 || !gift2 || !gift3)){
         gift1_y +=0.1;
         gift2_y +=0.1;
         gift3_y +=0.1;
+        
     }
+
     
     if(snowman_animation)
         snowman_rotation +=15;
